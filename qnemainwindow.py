@@ -49,17 +49,12 @@ class QNEMainWindow(QMainWindow):
         fileMenu.addSeparator()
         fileMenu.addAction(quitAct)
 
-        #self.setMinimumSize(640,480)
         self.setWindowTitle("Node Editor")
 
         self.scene = QGraphicsScene(self)
-        bgcolor = QApplication.palette().color(QPalette.Window)
-        self.scene.setBackgroundBrush(QBrush(bgcolor, Qt.SolidPattern))
-
         self.view = QGraphicsView(self)
         self.view.setScene(self.scene)
         self.view.setRenderHint(QPainter.Antialiasing)
-        self.view.setAlignment(Qt.AlignLeft | Qt.AlignTop)
         self.setCentralWidget(self.view)
 
         self.nodesEditor = QNodesEditor(self)

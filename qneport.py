@@ -40,6 +40,10 @@ class QNEPort(QGraphicsPathItem):
         self.radius_ = 4
         self.margin = 3
 
+        path = QPainterPath()
+        path.addEllipse(-self.radius_, -self.radius_, 2*self.radius_, 2*self.radius_);
+        self.setPath(path)
+
         self.setPen(QPen(Qt.darkRed))
         self.setBrush(Qt.red)
 
@@ -72,17 +76,13 @@ class QNEPort(QGraphicsPathItem):
     def setIsOutput(self, isOutput):
         self.isOutput_ = isOutput
 
-        path = QPainterPath()
         if self.isOutput_:
-            path.addEllipse(-2*self.radius_, -self.radius_, 2*self.radius_, 2*self.radius_);
             self.label.setPos(-self.radius_ - self.margin - self.label.boundingRect().width(),
                 -self.label.boundingRect().height()/2);
         else:
-            path.addEllipse(0, -self.radius_, 2*self.radius_, 2*self.radius_);
             self.label.setPos(self.radius_ + self.margin,
                 -self.label.boundingRect().height()/2);
 
-        self.setPath(path)
 
 
     def setNEBlock(self, block):

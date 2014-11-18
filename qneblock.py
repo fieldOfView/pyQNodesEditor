@@ -43,10 +43,8 @@ class QNEBlock(QGraphicsPathItem):
         self.setPath(path)
         self.setPen(QPen(Qt.darkGreen))
         self.setBrush(Qt.green)
-        self.setOpacity(0.9)
         self.setFlag(QGraphicsItem.ItemIsMovable)
         self.setFlag(QGraphicsItem.ItemIsSelectable)
-        self.setFlag(QGraphicsItem.ItemDoesntPropagateOpacityToChildren)
 
         self.horzMargin = 20
         self.vertMargin = 5
@@ -74,13 +72,6 @@ class QNEBlock(QGraphicsPathItem):
             painter.setBrush(Qt.green)
 
         painter.drawPath(self.path())
-
-
-    def itemChange(self, change, value):
-        if change == QGraphicsItem.ItemSelectedHasChanged:
-            self.setZValue( 1 if value else 0 )
-
-        return value
 
 
     def addPort(self, name, isOutput = False, flags = 0, ptr = None):
