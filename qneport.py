@@ -41,8 +41,7 @@ class QNEPort(QGraphicsPathItem):
         self.margin = 3
 
         self.setPen(QPen(Qt.black))
-        self.setBrush( QApplication.palette().highlight() )
-
+        self.setBrush(QApplication.palette().highlight())
         self.setFlag(QGraphicsItem.ItemSendsScenePositionChanges)
 
         self.m_portFlags = 0

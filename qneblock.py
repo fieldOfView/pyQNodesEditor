@@ -38,25 +38,33 @@ class QNEBlock(QGraphicsPathItem):
     def __init__(self, parent):
         super(QNEBlock, self).__init__(parent)
 
+        self.normalBrush = QApplication.palette().dark()
+        normalColor = self.normalBrush.color()
+        normalColor.setAlphaF(0.8)
+        self.normalBrush.setColor(normalColor)
+
+        self.selectedBrush = QApplication.palette().light()
+        selectedColor = self.selectedBrush.color()
+        selectedColor.setAlphaF(0.8)
+        self.selectedBrush.setColor(selectedColor)
+
         path = QPainterPath()
         path.addRoundedRect(-50, -15, 100, 30, 5, 5);
         self.setPath(path)
-        self.setPen(QPen(Qt.darkGreen))
-        self.setBrush( QApplication.palette().dark() )
-        self.setOpacity(0.8)
+        self.setPen(QPen(Qt.black))
+        self.setBrush(self.normalBrush)
         self.setFlag(QGraphicsItem.ItemIsMovable)
         self.setFlag(QGraphicsItem.ItemIsSelectable)
-        self.setFlag(QGraphicsItem.ItemDoesntPropagateOpacityToChildren)
-
-        self.horzMargin = 20
-        self.vertMargin = 5
-        self.width = self.horzMargin
-        self.height = self.vertMargin
 
         self.effect = QGraphicsDropShadowEffect(None)
         self.effect.setBlurRadius(8)
         self.effect.setOffset(2,2)
         self.setGraphicsEffect(self.effect)
+
+        self.horzMargin = 20
+        self.vertMargin = 5
+        self.width = self.horzMargin
+        self.height = self.vertMargin
 
 
     def __del__(self):
@@ -72,13 +80,9 @@ class QNEBlock(QGraphicsPathItem):
 
     def paint(self, painter, option, widget):
         if self.isSelected():
-            painter.setPen(QPen(Qt.black))
-            painter.setBrush( QApplication.palette().light() )
-            #painter.setBrush(Qt.yellow)
+            painter.setBrush(self.selectedBrush)
         else:
-            painter.setPen(QPen(Qt.black))
-            painter.setBrush( QApplication.palette().dark() )
-            #painter.setBrush(Qt.green)
+            painter.setBrush(self.normalBrush)
 
         painter.drawPath(self.path())
 

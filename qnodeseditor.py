@@ -44,20 +44,25 @@ class QNodesEditor(QObject):
         self.scene.installEventFilter(self)
 
 
+    def selectNone(self):
+        for item in self.scene.items():
+            if item.type() == QNEBlock.Type or item.type() == QNEConnection.Type:
+                item.setSelected(False)
+
     def selectAll(self):
         for item in self.scene.items():
-            if item.type() == QNEBlock.Type:
+            if item.type() == QNEBlock.Type or item.type() == QNEConnection.Type:
                 item.setSelected(True)
 
 
     def selectInverse(self):
         for item in self.scene.items():
-            if item.type() == QNEBlock.Type:
+            if item.type() == QNEBlock.Type or item.type() == QNEConnection.Type:
                 item.setSelected(not item.isSelected())
 
 
     def itemAt(self, position):
-        items = self.scene.items(QRectF( position - QPointF(1,1) , QSizeF(3,3) ))
+        items = self.scene.items(QRectF( position - QPointF(2,2) , QSizeF(4,4) ))
 
         for item in items:
             if item.type() > QGraphicsItem.UserType:
@@ -80,9 +85,12 @@ class QNodesEditor(QObject):
                     self.connection.setPos2(event.scenePos())
                     self.connection.updatePath()
 
+                    self.selectNone()
                     return True
 
-                elif item and item.type() == QNEBlock.Type and (event.modifiers() & Qt.ShiftModifier):
+                elif (item and (item.type() == QNEBlock.Type or
+                                item.type() == QNEConnection.Type) and
+                               (event.modifiers() & Qt.ShiftModifier)):
                     item.setSelected(not item.isSelected())
                     return True
 
