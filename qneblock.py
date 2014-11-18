@@ -76,6 +76,13 @@ class QNEBlock(QGraphicsPathItem):
         painter.drawPath(self.path())
 
 
+    def itemChange(self, change, value):
+        if change == QGraphicsItem.ItemSelectedHasChanged:
+            self.setZValue( 1 if value else 0 )
+
+        return value
+
+
     def addPort(self, name, isOutput = False, flags = 0, ptr = None):
         port = QNEPort(self)
         port.setName(name)

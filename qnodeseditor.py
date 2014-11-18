@@ -36,7 +36,6 @@ class QNodesEditor(QObject):
     def __init__(self, parent):
         super(QNodesEditor, self).__init__(parent)
 
-        self.selBlock = None
         self.connection = None
 
 
@@ -71,23 +70,10 @@ class QNodesEditor(QObject):
 
                     return True
 
-                elif item and item.type() == QNEBlock.Type:
-                    if self.selBlock:
-                        self.selBlock.setZValue(0)
-
-                    item.setZValue(1)
-                    self.selBlock = item
-
-                else:
-                    self.selBlock = None
-
             elif event.button() == Qt.RightButton:
                 item = self.itemAt(event.scenePos())
 
                 if item and (item.type() == QNEConnection.Type or item.type() == QNEBlock.Type):
-                    if self.selBlock == item:
-                        self.selBlock = None
-
                     if item.type() == QNEConnection.Type:
                         item.port1().removeConnection(item)
                         item.port2().removeConnection(item)
