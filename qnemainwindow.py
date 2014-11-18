@@ -39,30 +39,6 @@ class QNEMainWindow(QMainWindow):
     def __init__(self, parent):
         super(QNEMainWindow, self).__init__(parent)
 
-        quitAct = QAction("&Quit", self, shortcut="Ctrl+Q",
-            statusTip="Exit the application", triggered=self.close)
-
-        addAct = QAction("&Add", self, shortcut="Ctrl+B",
-            statusTip="Add a block", triggered=self.addBlock)
-
-        fileMenu = self.menuBar().addMenu("&File")
-        fileMenu.addAction(addAct)
-        fileMenu.addSeparator()
-        fileMenu.addAction(quitAct)
-
-        zoomInAct = QAction("Zoom &In", self, shortcut="Ctrl++",
-            triggered=self.zoomIn)
-        zoomOutAct = QAction("Zoom &Out", self, shortcut="Ctrl+-",
-            triggered=self.zoomOut)
-        zoomResetAct = QAction("&Reset Zoom", self, shortcut="Ctrl+0",
-            triggered=self.zoomReset)
-
-        viewMenu = self.menuBar().addMenu("&View")
-        viewMenu.addAction(zoomInAct)
-        viewMenu.addAction(zoomOutAct)
-        viewMenu.addSeparator()
-        viewMenu.addAction(zoomResetAct)
-
         self.setMinimumSize(400,400)
         self.setWindowTitle("Node Editor")
 
@@ -74,16 +50,11 @@ class QNEMainWindow(QMainWindow):
         self.view.setRenderHint(QPainter.Antialiasing)
         self.setCentralWidget(self.view)
 
-        self.view.addAction(quitAct)
-        self.view.addAction(addAct)
-        self.view.addAction(zoomInAct)
-        self.view.addAction(zoomOutAct)
-        self.view.addAction(zoomResetAct)
-
         self.nodesEditor = QNodesEditor(self)
         self.nodesEditor.install(self.scene)
 
         self.scale = 1
+        self.installActions()
 
         block = QNEBlock(None)
         self.scene.addItem(block)
@@ -101,6 +72,53 @@ class QNEMainWindow(QMainWindow):
 
         block = block.clone()
         block.setPos(150,150)
+
+
+    def installActions(self):
+        quitAct = QAction("&Quit", self, shortcut="Ctrl+Q",
+            statusTip="Exit the application", triggered=self.close)
+
+        addAct = QAction("&Add", self, shortcut="Ctrl+B",
+            statusTip="Add a block", triggered=self.addBlock)
+
+        fileMenu = self.menuBar().addMenu("&File")
+        fileMenu.addAction(addAct)
+        fileMenu.addSeparator()
+        fileMenu.addAction(quitAct)
+
+        # for shortcuts
+        self.view.addAction(quitAct)
+        self.view.addAction(addAct)
+
+        selectAllAct = QAction("Select &All", self, shortcut="Ctrl+A",
+            triggered=self.nodesEditor.selectAll)
+        selectInverseAct = QAction("Select &Inverse", self, shortcut="Ctrl+I",
+            triggered=self.nodesEditor.selectInverse)
+
+        editMenu = self.menuBar().addMenu("&Edit")
+        editMenu.addAction(selectAllAct)
+        editMenu.addAction(selectInverseAct)
+
+        self.view.addAction(selectAllAct)
+        self.view.addAction(selectInverseAct)
+
+        zoomInAct = QAction("Zoom &In", self, shortcut="Ctrl++",
+            triggered=self.zoomIn)
+        zoomOutAct = QAction("Zoom &Out", self, shortcut="Ctrl+-",
+            triggered=self.zoomOut)
+        zoomResetAct = QAction("&Reset Zoom", self, shortcut="Ctrl+0",
+            triggered=self.zoomReset)
+
+        viewMenu = self.menuBar().addMenu("&View")
+        viewMenu.addAction(zoomInAct)
+        viewMenu.addAction(zoomOutAct)
+        viewMenu.addSeparator()
+        viewMenu.addAction(zoomResetAct)
+
+        self.view.addAction(zoomInAct)
+        self.view.addAction(zoomOutAct)
+        self.view.addAction(zoomResetAct)
+
 
 
     def addBlock(self):

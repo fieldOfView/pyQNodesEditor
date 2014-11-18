@@ -44,6 +44,18 @@ class QNodesEditor(QObject):
         self.scene.installEventFilter(self)
 
 
+    def selectAll(self):
+        for item in self.scene.items():
+            if item.type() == QNEBlock.Type:
+                item.setSelected(True)
+
+
+    def selectInverse(self):
+        for item in self.scene.items():
+            if item.type() == QNEBlock.Type:
+                item.setSelected(not item.isSelected())
+
+
     def itemAt(self, position):
         items = self.scene.items(QRectF( position - QPointF(1,1) , QSizeF(3,3) ))
 
