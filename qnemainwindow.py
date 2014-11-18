@@ -27,7 +27,7 @@
 #SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from PyQt5.QtCore import (Qt)
-from PyQt5.QtGui import (QPainter, QBrush)
+from PyQt5.QtGui import (QPainter, QBrush, QTransform)
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QAction, QWidget,
     QGraphicsScene, QGraphicsView)
 
@@ -42,14 +42,28 @@ class QNEMainWindow(QMainWindow):
         quitAct = QAction("&Quit", self, shortcut="Ctrl+Q",
             statusTip="Exit the application", triggered=self.close)
 
-        addAct = QAction("&Add", self, statusTip="Add a block", triggered=self.addBlock)
+        addAct = QAction("&Add", self, shortcut="Ctrl+B",
+            statusTip="Add a block", triggered=self.addBlock)
 
         fileMenu = self.menuBar().addMenu("&File")
         fileMenu.addAction(addAct)
         fileMenu.addSeparator()
         fileMenu.addAction(quitAct)
 
-        #self.setMinimumSize(640,480)
+        zoomInAct = QAction("Zoom &In", self, shortcut="Ctrl++",
+            triggered=self.zoomIn)
+        zoomOutAct = QAction("Zoom &Out", self, shortcut="Ctrl+-",
+            triggered=self.zoomOut)
+        zoomResetAct = QAction("&Reset Zoom", self, shortcut="Ctrl+0",
+            triggered=self.zoomReset)
+
+        viewMenu = self.menuBar().addMenu("&View")
+        viewMenu.addAction(zoomInAct)
+        viewMenu.addAction(zoomOutAct)
+        viewMenu.addSeparator()
+        viewMenu.addAction(zoomResetAct)
+
+        self.setMinimumSize(400,400)
         self.setWindowTitle("Node Editor")
 
         self.scene = QGraphicsScene(self)
@@ -58,11 +72,18 @@ class QNEMainWindow(QMainWindow):
         self.view = QGraphicsView(self)
         self.view.setScene(self.scene)
         self.view.setRenderHint(QPainter.Antialiasing)
-        self.view.setAlignment(Qt.AlignLeft | Qt.AlignTop)
         self.setCentralWidget(self.view)
+
+        self.view.addAction(quitAct)
+        self.view.addAction(addAct)
+        self.view.addAction(zoomInAct)
+        self.view.addAction(zoomOutAct)
+        self.view.addAction(zoomResetAct)
 
         self.nodesEditor = QNodesEditor(self)
         self.nodesEditor.install(self.scene)
+
+        self.scale = 1
 
         block = QNEBlock(None)
         self.scene.addItem(block)
@@ -93,6 +114,25 @@ class QNEMainWindow(QMainWindow):
         for i in range(0,math.floor(random.uniform(3,8))):
             block.addPort(random.choice(names), random.random()>0.5)
         block.setPos(self.view.sceneRect().center().toPoint())
+
+
+    def zoomIn(self):
+        if self.scale < 4:
+            self.scale *= 1.2
+            self.view.scale(1.2, 1.2)
+
+
+    def zoomOut(self):
+        if self.scale > 0.1:
+            self.scale /= 1.2
+            self.view.scale(1/1.2, 1/1.2)
+
+
+    def zoomReset(self):
+        self.scale = 1
+        self.view.setTransform(QTransform())
+
+
 
 if __name__ == '__main__':
     import sys
