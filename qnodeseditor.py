@@ -70,6 +70,10 @@ class QNodesEditor(QObject):
 
                     return True
 
+                elif item and item.type() == QNEBlock.Type and (event.modifiers() & Qt.ShiftModifier):
+                    item.setSelected(not item.isSelected())
+                    return True
+
             elif event.button() == Qt.RightButton:
                 item = self.itemAt(event.scenePos())
 

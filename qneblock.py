@@ -28,7 +28,7 @@
 from PyQt5.QtCore import (Qt)
 from PyQt5.QtGui import (QBrush, QColor, QPainter, QPainterPath, QPen,
     QFontMetrics)
-from PyQt5.QtWidgets import (QGraphicsItem, QGraphicsPathItem)
+from PyQt5.QtWidgets import (QApplication, QGraphicsItem, QGraphicsPathItem, QGraphicsDropShadowEffect)
 
 from qneport import QNEPort
 
@@ -42,14 +42,21 @@ class QNEBlock(QGraphicsPathItem):
         path.addRoundedRect(-50, -15, 100, 30, 5, 5);
         self.setPath(path)
         self.setPen(QPen(Qt.darkGreen))
-        self.setBrush(Qt.green)
+        self.setBrush( QApplication.palette().dark() )
+        self.setOpacity(0.8)
         self.setFlag(QGraphicsItem.ItemIsMovable)
         self.setFlag(QGraphicsItem.ItemIsSelectable)
+        self.setFlag(QGraphicsItem.ItemDoesntPropagateOpacityToChildren)
 
         self.horzMargin = 20
         self.vertMargin = 5
         self.width = self.horzMargin
         self.height = self.vertMargin
+
+        self.effect = QGraphicsDropShadowEffect(None)
+        self.effect.setBlurRadius(8)
+        self.effect.setOffset(2,2)
+        self.setGraphicsEffect(self.effect)
 
 
     def __del__(self):
@@ -65,13 +72,22 @@ class QNEBlock(QGraphicsPathItem):
 
     def paint(self, painter, option, widget):
         if self.isSelected():
-            painter.setPen(QPen(Qt.darkYellow))
-            painter.setBrush(Qt.yellow)
+            painter.setPen(QPen(Qt.black))
+            painter.setBrush( QApplication.palette().light() )
+            #painter.setBrush(Qt.yellow)
         else:
-            painter.setPen(QPen(Qt.darkGreen))
-            painter.setBrush(Qt.green)
+            painter.setPen(QPen(Qt.black))
+            painter.setBrush( QApplication.palette().dark() )
+            #painter.setBrush(Qt.green)
 
         painter.drawPath(self.path())
+
+
+    def itemChange(self, change, value):
+        if change == QGraphicsItem.ItemSelectedHasChanged:
+            self.setZValue( 1 if value else 0 )
+
+        return value
 
 
     def addPort(self, name, isOutput = False, flags = 0, ptr = None):

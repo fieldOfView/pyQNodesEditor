@@ -27,9 +27,9 @@
 #SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from PyQt5.QtCore import (Qt)
-from PyQt5.QtGui import (QPainter, QBrush, QPalette)
+from PyQt5.QtGui import (QPainter, QBrush)
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QAction, QWidget,
-    QGraphicsScene, QGraphicsView)
+    QGraphicsScene, QGraphicsView, QStyleFactory)
 
 from qnodeseditor import QNodesEditor
 from qneblock import QNEBlock
@@ -38,6 +38,8 @@ from qneport import QNEPort
 class QNEMainWindow(QMainWindow):
     def __init__(self, parent):
         super(QNEMainWindow, self).__init__(parent)
+
+        QApplication.setStyle(QStyleFactory.create("gtk"))
 
         quitAct = QAction("&Quit", self, shortcut="Ctrl+Q",
             statusTip="Exit the application", triggered=self.close)
@@ -49,12 +51,16 @@ class QNEMainWindow(QMainWindow):
         fileMenu.addSeparator()
         fileMenu.addAction(quitAct)
 
+        #self.setMinimumSize(640,480)
         self.setWindowTitle("Node Editor")
 
         self.scene = QGraphicsScene(self)
+        self.scene.setBackgroundBrush( QApplication.palette().window() )
+
         self.view = QGraphicsView(self)
         self.view.setScene(self.scene)
         self.view.setRenderHint(QPainter.Antialiasing)
+        self.view.setAlignment(Qt.AlignLeft | Qt.AlignTop)
         self.setCentralWidget(self.view)
 
         self.nodesEditor = QNodesEditor(self)

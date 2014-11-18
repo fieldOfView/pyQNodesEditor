@@ -27,7 +27,7 @@
 
 from PyQt5.QtCore import (Qt)
 from PyQt5.QtGui import (QBrush, QColor, QPainter, QPainterPath, QPen)
-from PyQt5.QtWidgets import (QGraphicsItem, QGraphicsPathItem, QGraphicsTextItem)
+from PyQt5.QtWidgets import (QApplication, QGraphicsItem, QGraphicsPathItem, QGraphicsTextItem)
 
 class QNEPort(QGraphicsPathItem):
     (NamePort, TypePort) = (1, 2)
@@ -40,12 +40,8 @@ class QNEPort(QGraphicsPathItem):
         self.radius_ = 4
         self.margin = 3
 
-        path = QPainterPath()
-        path.addEllipse(-self.radius_, -self.radius_, 2*self.radius_, 2*self.radius_);
-        self.setPath(path)
-
-        self.setPen(QPen(Qt.darkRed))
-        self.setBrush(Qt.red)
+        self.setPen(QPen(Qt.black))
+        self.setBrush( QApplication.palette().highlight() )
 
         self.setFlag(QGraphicsItem.ItemSendsScenePositionChanges)
 
@@ -76,13 +72,17 @@ class QNEPort(QGraphicsPathItem):
     def setIsOutput(self, isOutput):
         self.isOutput_ = isOutput
 
+        path = QPainterPath()
         if self.isOutput_:
+            path.addEllipse(-2*self.radius_, -self.radius_, 2*self.radius_, 2*self.radius_);
             self.label.setPos(-self.radius_ - self.margin - self.label.boundingRect().width(),
                 -self.label.boundingRect().height()/2);
         else:
+            path.addEllipse(0, -self.radius_, 2*self.radius_, 2*self.radius_);
             self.label.setPos(self.radius_ + self.margin,
                 -self.label.boundingRect().height()/2);
 
+        self.setPath(path)
 
 
     def setNEBlock(self, block):
