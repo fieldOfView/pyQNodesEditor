@@ -29,7 +29,7 @@
 from PyQt5.QtCore import (Qt)
 from PyQt5.QtGui import (QPainter, QBrush)
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QAction, QWidget,
-    QGraphicsScene, QGraphicsView, QStyleFactory)
+    QGraphicsScene, QGraphicsView)
 
 from qnodeseditor import QNodesEditor
 from qneblock import QNEBlock
@@ -38,8 +38,6 @@ from qneport import QNEPort
 class QNEMainWindow(QMainWindow):
     def __init__(self, parent):
         super(QNEMainWindow, self).__init__(parent)
-
-        QApplication.setStyle(QStyleFactory.create("gtk"))
 
         quitAct = QAction("&Quit", self, shortcut="Ctrl+Q",
             statusTip="Exit the application", triggered=self.close)
