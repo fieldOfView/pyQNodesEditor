@@ -99,17 +99,10 @@ class QNodesEditor(QObject):
 
                 if item and (item.type() == QNEConnection.Type or item.type() == QNEBlock.Type):
                     if item.type() == QNEConnection.Type:
-                        item.port1().removeConnection(item)
-                        item.port2().removeConnection(item)
+                        item.delete()
                     elif item.type() == QNEBlock.Type:
-                        for port in set(item.ports()):
-                            for connection in set(port.connections()):
-                                connection.port1().removeConnection(connection)
-                                connection.port2().removeConnection(connection)
-                                self.scene.removeItem(connection)
-                            self.scene.removeItem(port)
+                        item.delete()
 
-                    self.scene.removeItem(item)
                     return True
 
 
@@ -137,8 +130,7 @@ class QNodesEditor(QObject):
 
                         return True
 
-                self.connection.port1().removeConnection(self.connection)
-                self.scene.removeItem(self.connection)
+                self.connection.delete()
                 self.connection = None
                 return True
 

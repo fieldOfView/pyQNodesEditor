@@ -52,15 +52,16 @@ class QNEPort(QGraphicsPathItem):
 
 
     def __del__(self):
-        #print("Del QNEPort %s" % self.name)
+        print("Del QNEPort %s" % self.name)
+        pass
 
+
+    def delete(self):
         for connection in self.m_connections:
-            if connection.port1():
-                connection.port1().removeConnection(connection)
-            if connection.port2():
-                connection.port2().removeConnection(connection)
-            if self.scene():
-                self.scene().removeItem(connection)
+            connection.delete()
+        self.scene().removeItem(self)
+        self.m_block = None
+        self.m_connections = []
 
 
     def setName(self, name):
