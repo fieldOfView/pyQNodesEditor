@@ -57,7 +57,7 @@ class QNEPort(QGraphicsPathItem):
 
 
     def __del__(self):
-        print("Del QNEPort %s" % self.name)
+        #print("Del QNEPort %s" % self.name)
         pass
 
 

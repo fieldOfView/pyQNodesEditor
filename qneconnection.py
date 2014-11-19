@@ -47,7 +47,7 @@ class QNEConnection(QGraphicsPathItem):
 
 
     def __del__(self):
-        print("Del QNEConnection")
+        #print("Del QNEConnection")
         pass
 
 
