@@ -11,6 +11,9 @@ Note: Saving/Loading is currently not implemented
 The fov_dev branch has the following changes from the original:
 
 * Implements "shift-click" to select multiple blocks
+* Implements "rubberband" (multiple) selection
+* Select All/Select Inverse
+* Press "Del" to delete selected items, instead of right mouse button
 * Implements zooming in/out of node graph
 * Selected blocks jump to the front
 * Ports are moved halfway into the block
