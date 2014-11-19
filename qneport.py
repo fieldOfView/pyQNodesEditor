@@ -59,7 +59,8 @@ class QNEPort(QGraphicsPathItem):
     def delete(self):
         for connection in self.m_connections:
             connection.delete()
-        self.scene().removeItem(self)
+        if self.scene():
+            self.scene().removeItem(self)
         self.m_block = None
         self.m_connections = []
 

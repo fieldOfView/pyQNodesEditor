@@ -59,9 +59,10 @@ class QNEConnection(QGraphicsPathItem):
             self.m_port1.removeConnection(self)
         if self.m_port2:
             self.m_port2.removeConnection(self)
+        if self.scene():
+            self.scene().removeItem(self)
         self.m_port1 = None
         self.m_port2 = None
-        self.scene().removeItem(self)
 
 
     def paint(self, painter, option, widget):

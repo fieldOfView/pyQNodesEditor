@@ -77,7 +77,8 @@ class QNEBlock(QGraphicsPathItem):
             for connection in port.connections():
                 connection.delete()
             port.delete()
-        self.scene().removeItem(self)
+        if self.scene():
+            self.scene().removeItem(self)
 
 
     def paint(self, painter, option, widget):
