@@ -53,14 +53,16 @@ class QNEBlock(QGraphicsPathItem):
 
 
     def __del__(self):
-        #print("Del QNEBlock")
+        print("Del QNEBlock")
+        pass
 
+
+    def delete(self):
         for port in self.ports():
             for connection in port.connections():
-                connection.port1().removeConnection(connection)
-                connection.port2().removeConnection(connection)
-                self.scene().removeItem(connection)
-            self.scene().removeItem(port)
+                connection.delete()
+            port.delete()
+        self.scene().removeItem(self)
 
 
     def paint(self, painter, option, widget):

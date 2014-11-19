@@ -47,14 +47,18 @@ class QNEConnection(QGraphicsPathItem):
 
 
     def __del__(self):
-        #print("Del QNEConnection")
+        print("Del QNEConnection")
+        pass
 
+
+    def delete(self):
         if self.m_port1:
             self.m_port1.removeConnection(self)
         if self.m_port2:
             self.m_port2.removeConnection(self)
-        if self.scene():
-            self.scene().removeItem(self)
+        self.m_port1 = None
+        self.m_port2 = None
+        self.scene().removeItem(self)
 
 
     def setPos1(self, pos):
