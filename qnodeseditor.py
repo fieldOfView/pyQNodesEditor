@@ -26,7 +26,7 @@
 
 
 from PyQt5.QtCore import (Qt, QObject, QEvent, QSizeF, QRectF, QPointF)
-from PyQt5.QtWidgets import (QGraphicsItem, QGraphicsSceneMouseEvent)
+from PyQt5.QtWidgets import (QGraphicsView, QGraphicsItem, QGraphicsSceneMouseEvent)
 
 from qneblock import QNEBlock
 from qneport import QNEPort
@@ -37,7 +37,8 @@ class QNodesEditor(QObject):
         super(QNodesEditor, self).__init__(parent)
 
         self.connection = None
-
+        self.view = parent.view
+        self.view.setDragMode(QGraphicsView.RubberBandDrag)
 
     def install(self, scene):
         self.scene = scene
@@ -84,6 +85,7 @@ class QNodesEditor(QObject):
             if event.button() == Qt.LeftButton:
                 item = self.itemAt(event.scenePos())
                 if item and item.type() == QNEPort.Type:
+                    self.view.setDragMode(QGraphicsView.NoDrag)
                     self.connection = QNEConnection(None)
                     self.scene.addItem(self.connection)
 
@@ -101,17 +103,6 @@ class QNodesEditor(QObject):
                     item.setSelected(not item.isSelected())
                     return True
 
-            elif event.button() == Qt.RightButton:
-                item = self.itemAt(event.scenePos())
-
-                if item and (item.type() == QNEConnection.Type or item.type() == QNEBlock.Type):
-                    if item.type() == QNEConnection.Type:
-                        item.delete()
-                    elif item.type() == QNEBlock.Type:
-                        item.delete()
-
-                    return True
-
 
         elif event.type() == QEvent.GraphicsSceneMouseMove:
             if self.connection:
@@ -123,6 +114,8 @@ class QNodesEditor(QObject):
 
         elif event.type() == QEvent.GraphicsSceneMouseRelease:
             if self.connection and event.button() == Qt.LeftButton:
+                self.view.setDragMode(QGraphicsView.RubberBandDrag)
+
                 item = self.itemAt(event.scenePos())
                 if item and item.type() == QNEPort.Type:
                     port1 = self.connection.port1()
