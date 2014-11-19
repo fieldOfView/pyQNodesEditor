@@ -61,6 +61,13 @@ class QNodesEditor(QObject):
                 item.setSelected(not item.isSelected())
 
 
+    def deleteSelected(self):
+        for item in self.scene.items():
+            if (item.isSelected() and
+               (item.type() == QNEBlock.Type or item.type() == QNEConnection.Type)):
+                item.delete()
+
+
     def itemAt(self, position):
         items = self.scene.items(QRectF( position - QPointF(2,2) , QSizeF(4,4) ))
 

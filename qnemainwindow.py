@@ -94,13 +94,18 @@ class QNEMainWindow(QMainWindow):
             triggered=self.nodesEditor.selectAll)
         selectInverseAct = QAction("Select &Inverse", self, shortcut="Ctrl+I",
             triggered=self.nodesEditor.selectInverse)
+        deleteSelectedAct = QAction("&Delete Selected", self, shortcut="Del",
+            triggered=self.nodesEditor.deleteSelected)
 
         editMenu = self.menuBar().addMenu("&Edit")
         editMenu.addAction(selectAllAct)
         editMenu.addAction(selectInverseAct)
+        editMenu.addSeparator()
+        editMenu.addAction(deleteSelectedAct)
 
         self.view.addAction(selectAllAct)
         self.view.addAction(selectInverseAct)
+        self.view.addAction(deleteSelectedAct)
 
         zoomInAct = QAction("Zoom &In", self, shortcut="Ctrl++",
             triggered=self.zoomIn)
