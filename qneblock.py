@@ -68,7 +68,7 @@ class QNEBlock(QGraphicsPathItem):
 
 
     def __del__(self):
-        print("Del QNEBlock")
+        #print("Del QNEBlock")
         pass
 
 
