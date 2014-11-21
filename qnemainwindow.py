@@ -73,7 +73,7 @@ class QNEMainWindow(QMainWindow):
         block.setPos(150,0)
 
         block = block.clone()
-        block.setPos(150,150)
+        block.setPos(150,160)
 
 
     def installActions(self):
@@ -137,7 +137,7 @@ class QNEMainWindow(QMainWindow):
         self.scene.addItem(block)
         names = ["Vin", "Voutsadfasdf", "Imin", "Imax", "mul", "add", "sub", "div", "Conv", "FFT"]
         for i in range(0,math.floor(random.uniform(3,8))):
-            block.addPort(random.choice(names), random.random()>0.5)
+            block.addPort(random.choice(names), random.random()>0.5, random.random()>0.5)
         block.setPos(self.view.sceneRect().center().toPoint())
 
 
