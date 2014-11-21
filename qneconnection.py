@@ -93,8 +93,8 @@ class QNEConnection(QGraphicsPathItem):
 
 
     def updatePosFromPorts(self):
-        self.pos1 = self.m_port1.scenePos()
-        self.pos2 = self.m_port2.scenePos()
+        self.pos1 = self.m_port1.scenePos()+QPointF(self.m_port1.radius(),0)
+        self.pos2 = self.m_port2.scenePos()+QPointF(self.m_port2.radius(),0)
 
 
     def updatePath(self):

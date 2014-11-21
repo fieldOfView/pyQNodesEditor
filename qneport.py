@@ -43,6 +43,8 @@ class QNEPort(QGraphicsPathItem):
         self.setPen(QPen(Qt.black))
         self.setBrush(QApplication.palette().highlight())
         self.setFlag(QGraphicsItem.ItemSendsScenePositionChanges)
+        
+        self.outputPort = QNEOutputPort(self)
 
         self.m_portFlags = 0
         self.isOutput_ = False
@@ -68,6 +70,7 @@ class QNEPort(QGraphicsPathItem):
     def setName(self, name):
         self.name = name
         self.label.setPlainText(name)
+        self.label.setPos(self.radius_ + self.margin, -self.label.boundingRect().height()/2);
 
 
     def setIsOutput(self, isOutput):
@@ -75,17 +78,18 @@ class QNEPort(QGraphicsPathItem):
 
         path = QPainterPath()
         if self.isOutput_:
-            path.addEllipse(-2*self.radius_, -self.radius_, 2*self.radius_, 2*self.radius_);
-            self.label.setPos(-self.radius_ - self.margin - self.label.boundingRect().width(),
-                -self.label.boundingRect().height()/2);
+            self.outputPort.setVisible(True)
         else:
             path.addEllipse(0, -self.radius_, 2*self.radius_, 2*self.radius_);
-            self.label.setPos(self.radius_ + self.margin,
-                -self.label.boundingRect().height()/2);
+            self.outputPort.setVisible(False)
 
         self.setPath(path)
 
 
+    def setWidth(self, width):
+        self.outputPort.setPos(width, 0)
+        
+        
     def setNEBlock(self, block):
         self.m_block = block
 
@@ -166,3 +170,41 @@ class QNEPort(QGraphicsPathItem):
                 connection.updatePath()
 
         return value
+
+        
+class QNEOutputPort(QGraphicsPathItem):
+    (Type) = (QGraphicsItem.UserType +1)
+
+    def __init__(self, parent):
+        super(QNEOutputPort, self).__init__(parent)
+        self.parent = parent
+        
+        self.setPen(self.parent.pen())
+        self.setBrush(self.parent.brush())
+        
+        radius_ = parent.radius_
+        
+        path = QPainterPath()
+        path.addEllipse(0, -radius_, 2*radius_, 2*radius_);
+        self.setPath(path)
+        
+    def type(self):
+        return self.Type
+        
+    def addConnection(self, connection):
+        self.parent.addConnection(connection)
+
+    def removeConnection(self, connection):
+        self.parent.removeConnection(connection)
+        
+    def block(self):
+        return self.parent.block()
+        
+    def isOutput(self):
+        return self.parent.isOutput()
+        
+    def isConnected(self, other):
+        return self.parent.isConnected(other)
+        
+    def radius(self):
+        return self.parent.radius()

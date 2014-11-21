@@ -90,7 +90,7 @@ class QNodesEditor(QObject):
                     self.scene.addItem(self.connection)
 
                     self.connection.setPort1(item)
-                    self.connection.setPos1(item.scenePos())
+                    self.connection.setPos1(item.scenePos()+QPointF(item.radius(),0))
                     self.connection.setPos2(event.scenePos())
                     self.connection.updatePath()
 

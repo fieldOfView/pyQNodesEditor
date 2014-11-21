@@ -61,7 +61,7 @@ class QNEBlock(QGraphicsPathItem):
         self.effect.setOffset(2,2)
         self.setGraphicsEffect(self.effect)
 
-        self.horzMargin = 20
+        self.horzMargin = 16
         self.vertMargin = 5
         self.width = self.horzMargin
         self.height = self.vertMargin
@@ -121,10 +121,8 @@ class QNEBlock(QGraphicsPathItem):
             if port_.type() != QNEPort.Type:
                 continue
 
-            if port_.isOutput():
-                port_.setPos(self.width/2 + port.radius(), y)
-            else:
-                port_.setPos(-self.width/2 - port.radius(), y)
+            port_.setPos(-self.width/2 - port.radius(), y)
+            port_.setWidth(self.width)
             y += height;
 
         return port
