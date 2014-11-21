@@ -97,10 +97,10 @@ class QNEBlock(QGraphicsPathItem):
         return value
 
 
-    def addPort(self, name, isOutput = False, flags = 0, ptr = None):
+    def addPort(self, name, hasInput = False, hasOutput = False, flags = 0, ptr = None):
         port = QNEPort(self)
         port.setName(name)
-        port.setIsOutput(isOutput)
+        port.setCanConnect(hasInput, hasOutput)
         port.setNEBlock(self)
         port.setPortFlags(flags)
         port.setPtr(ptr)
@@ -127,13 +127,26 @@ class QNEBlock(QGraphicsPathItem):
 
         return port
 
+        
+    def addNonePort(self, name):
+        self.addPort(name, False, False)
+
 
     def addInputPort(self, name):
-        self.addPort(name, False)
+        self.addPort(name, True, False)
 
 
     def addOutputPort(self, name):
-        self.addPort(name, True)
+        self.addPort(name, False, True)
+
+
+    def addInputOutputPort(self, name):
+        self.addPort(name, True, True)
+
+
+    def addNonePorts(self, names):
+        for name in names:
+            self.addNonePort(name)
 
 
     def addInputPorts(self, names):
@@ -146,12 +159,17 @@ class QNEBlock(QGraphicsPathItem):
             self.addOutputPort(name)
 
 
+    def addInputOutputPorts(self, names):
+        for name in names:
+            self.addInputOutputPort(name)
+
+
     def clone(self):
         block = QNEBlock(None)
         self.scene().addItem(block)
 
         for port_ in self.childItems():
-            block.addPort(port_.portName(), port_.isOutput(), port_.portFlags(), port_.ptr())
+            block.addPort(port_.portName(), port_.hasInput(), port_.hasOutput(), port_.portFlags(), port_.ptr())
 
         return block
 
@@ -163,6 +181,7 @@ class QNEBlock(QGraphicsPathItem):
                 result.append(port_)
 
         return result
+
 
     def type(self):
         return self.Type

@@ -58,14 +58,16 @@ class QNEMainWindow(QMainWindow):
 
         block = QNEBlock(None)
         self.scene.addItem(block)
-        block.addPort("test", 0, QNEPort.NamePort)
-        block.addPort("TestBlock", 0, QNEPort.TypePort)
+        block.addPort("test", False, False, QNEPort.NamePort)
+        block.addPort("TestBlock", False, False, QNEPort.TypePort)
         block.addInputPort("in1");
         block.addInputPort("in2");
         block.addInputPort("in3");
         block.addOutputPort("out1");
         block.addOutputPort("out2");
         block.addOutputPort("out3");
+        block.addInputOutputPort("inout1");
+        block.addNonePort("none");
 
         block = block.clone()
         block.setPos(150,0)

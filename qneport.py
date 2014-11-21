@@ -47,7 +47,8 @@ class QNEPort(QGraphicsPathItem):
         self.outputPort = QNEOutputPort(self)
 
         self.m_portFlags = 0
-        self.isOutput_ = False
+        self.hasInput_ = False
+        self.hasOutput_ = False
 
         self.m_block = None
         self.m_connections = []
@@ -73,16 +74,20 @@ class QNEPort(QGraphicsPathItem):
         self.label.setPos(self.radius_ + self.margin, -self.label.boundingRect().height()/2);
 
 
-    def setIsOutput(self, isOutput):
-        self.isOutput_ = isOutput
+    def setCanConnect(self, hasInput, hasOutput):
+        self.hasInput_ = hasInput
+        self.hasOutput_ = hasOutput
 
-        path = QPainterPath()
-        if self.isOutput_:
+        if self.hasOutput_:
             self.outputPort.setVisible(True)
         else:
-            path.addEllipse(0, -self.radius_, 2*self.radius_, 2*self.radius_);
             self.outputPort.setVisible(False)
 
+        path = QPainterPath()
+        if self.hasInput_:
+            path.addEllipse(0, -self.radius_, 2*self.radius_, 2*self.radius_);
+        else:
+            pass
         self.setPath(path)
 
 
@@ -125,8 +130,20 @@ class QNEPort(QGraphicsPathItem):
         return self.name
 
 
+    def hasInput(self):
+        return self.hasInput_
+
+
+    def hasOutput(self):
+        return self.hasOutput_
+
+
+    def isInput(self):
+        return True
+
+
     def isOutput(self):
-        return self.isOutput_
+        return False
 
 
     def block(self):
@@ -171,7 +188,7 @@ class QNEPort(QGraphicsPathItem):
 
         return value
 
-        
+
 class QNEOutputPort(QGraphicsPathItem):
     (Type) = (QGraphicsItem.UserType +1)
 
@@ -187,24 +204,43 @@ class QNEOutputPort(QGraphicsPathItem):
         path = QPainterPath()
         path.addEllipse(0, -radius_, 2*radius_, 2*radius_);
         self.setPath(path)
-        
+
+
     def type(self):
         return self.Type
-        
+
+
     def addConnection(self, connection):
         self.parent.addConnection(connection)
 
+
     def removeConnection(self, connection):
         self.parent.removeConnection(connection)
-        
+
+
+    def isInput(self):
+        return False
+
+
+    def isOutput(self):
+        return True
+
+
+    def hasInput(self):
+        return self.parent.hasInput()
+
+
+    def hasOutput(self):
+        return self.parent.hasInput()
+
+
     def block(self):
         return self.parent.block()
-        
-    def isOutput(self):
-        return self.parent.isOutput()
-        
+
+
     def isConnected(self, other):
         return self.parent.isConnected(other)
-        
+
+
     def radius(self):
         return self.parent.radius()
