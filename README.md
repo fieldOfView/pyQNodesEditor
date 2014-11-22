@@ -10,7 +10,7 @@ Note: Saving/Loading is currently not implemented
 
 The fov_dev branch has the following changes from the original:
 
-* Implements "shift-click" to select multiple blocks
+* Ports can have input, output, both, or no connections
 * Implements "rubberband" (multiple) selection
 * Select All/Select Inverse
 * Press "Del" to delete selected items, instead of right mouse button

@@ -97,13 +97,6 @@ class QNodesEditor(QObject):
                     self.selectNone()
                     return True
 
-                elif (item and (item.type() == QNEBlock.Type or
-                                item.type() == QNEConnection.Type) and
-                               (event.modifiers() & Qt.ShiftModifier)):
-                    item.setSelected(not item.isSelected())
-                    return True
-
-
         elif event.type() == QEvent.GraphicsSceneMouseMove:
             if self.connection:
                 self.connection.setPos2(event.scenePos())
