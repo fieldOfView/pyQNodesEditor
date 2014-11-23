@@ -26,7 +26,8 @@
 
 
 from PySide.QtCore import (Qt, QObject, QEvent, QSizeF, QRectF, QPointF)
-from PySide.QtGui import (QGraphicsItem, QGraphicsSceneMouseEvent)
+from PySide.QtGui import (QGraphicsView, QGraphicsItem, QGraphicsItem, 
+    QGraphicsSceneMouseEvent)
 
 from qneblock import QNEBlock
 from qneport import QNEPort
@@ -37,15 +38,40 @@ class QNodesEditor(QObject):
         super(QNodesEditor, self).__init__(parent)
 
         self.connection = None
-
+        self.view = parent.view
+        self.view.setDragMode(QGraphicsView.RubberBandDrag)
 
     def install(self, scene):
         self.scene = scene
         self.scene.installEventFilter(self)
 
 
+    def selectNone(self):
+        for item in self.scene.items():
+            if item.type() == QNEBlock.Type or item.type() == QNEConnection.Type:
+                item.setSelected(False)
+
+    def selectAll(self):
+        for item in self.scene.items():
+            if item.type() == QNEBlock.Type or item.type() == QNEConnection.Type:
+                item.setSelected(True)
+
+
+    def selectInverse(self):
+        for item in self.scene.items():
+            if item.type() == QNEBlock.Type or item.type() == QNEConnection.Type:
+                item.setSelected(not item.isSelected())
+
+
+    def deleteSelected(self):
+        for item in self.scene.items():
+            if (item.isSelected() and
+               (item.type() == QNEBlock.Type or item.type() == QNEConnection.Type)):
+                item.delete()
+
+
     def itemAt(self, position):
-        items = self.scene.items(QRectF( position - QPointF(1,1) , QSizeF(3,3) ))
+        items = self.scene.items(QRectF( position - QPointF(2,2) , QSizeF(4,4) ))
 
         for item in items:
             if item.type() > QGraphicsItem.UserType:
@@ -60,27 +86,17 @@ class QNodesEditor(QObject):
             if event.button() == Qt.LeftButton:
                 item = self.itemAt(event.scenePos())
                 if item and item.type() == QNEPort.Type:
+                    self.view.setDragMode(QGraphicsView.NoDrag)
                     self.connection = QNEConnection(None)
                     self.scene.addItem(self.connection)
 
                     self.connection.setPort1(item)
-                    self.connection.setPos1(item.scenePos())
+                    self.connection.setPos1(item.scenePos()+QPointF(item.radius(),0))
                     self.connection.setPos2(event.scenePos())
                     self.connection.updatePath()
 
+                    self.selectNone()
                     return True
-
-            elif event.button() == Qt.RightButton:
-                item = self.itemAt(event.scenePos())
-
-                if item and (item.type() == QNEConnection.Type or item.type() == QNEBlock.Type):
-                    if item.type() == QNEConnection.Type:
-                        item.delete()
-                    elif item.type() == QNEBlock.Type:
-                        item.delete()
-
-                    return True
-
 
         elif event.type() == QEvent.GraphicsSceneMouseMove:
             if self.connection:
@@ -92,6 +108,8 @@ class QNodesEditor(QObject):
 
         elif event.type() == QEvent.GraphicsSceneMouseRelease:
             if self.connection and event.button() == Qt.LeftButton:
+                self.view.setDragMode(QGraphicsView.RubberBandDrag)
+
                 item = self.itemAt(event.scenePos())
                 if item and item.type() == QNEPort.Type:
                     port1 = self.connection.port1()

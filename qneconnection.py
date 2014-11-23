@@ -27,7 +27,7 @@
 
 from PySide.QtCore import (Qt, QPointF)
 from PySide.QtGui import (QBrush, QPen, QPainterPath)
-from PySide.QtGui import (QGraphicsItem, QGraphicsPathItem)
+from PySide.QtGui import (QApplication, QGraphicsItem, QGraphicsPathItem)
 
 class QNEConnection(QGraphicsPathItem):
     (Type) = (QGraphicsItem.UserType +2)
@@ -35,9 +35,12 @@ class QNEConnection(QGraphicsPathItem):
     def __init__(self, parent):
         super(QNEConnection, self).__init__(parent)
 
-        self.setPen(QPen(Qt.black, 2))
+        self.normalPen = QPen(QApplication.palette().text().color(), 2)
+        self.selectedPen = QPen(QApplication.palette().text().color(), 2, Qt.DashLine)
+        self.setPen(self.normalPen)
         self.setBrush(QBrush(Qt.NoBrush))
         self.setZValue(-1)
+        self.setFlag(QGraphicsItem.ItemIsSelectable)
 
         self.m_port1 = None
         self.m_port2 = None
@@ -56,9 +59,19 @@ class QNEConnection(QGraphicsPathItem):
             self.m_port1.removeConnection(self)
         if self.m_port2:
             self.m_port2.removeConnection(self)
+        if self.scene():
+            self.scene().removeItem(self)
         self.m_port1 = None
         self.m_port2 = None
-        self.scene().removeItem(self)
+
+
+    def paint(self, painter, option, widget):
+        if self.isSelected():
+            painter.setPen(self.selectedPen)
+        else:
+            painter.setPen(self.normalPen)
+
+        painter.drawPath(self.path())
 
 
     def setPos1(self, pos):
@@ -80,8 +93,8 @@ class QNEConnection(QGraphicsPathItem):
 
 
     def updatePosFromPorts(self):
-        self.pos1 = self.m_port1.scenePos()
-        self.pos2 = self.m_port2.scenePos()
+        self.pos1 = self.m_port1.scenePos()+QPointF(self.m_port1.radius(),0)
+        self.pos2 = self.m_port2.scenePos()+QPointF(self.m_port2.radius(),0)
 
 
     def updatePath(self):
