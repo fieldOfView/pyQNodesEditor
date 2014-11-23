@@ -25,10 +25,10 @@
 #SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-from PyQt5.QtCore import (Qt)
-from PyQt5.QtGui import (QBrush, QColor, QPainter, QPainterPath, QPen,
+from PySide.QtCore import (Qt)
+from PySide.QtGui import (QBrush, QColor, QPainter, QPainterPath, QPen,
     QFontMetrics)
-from PyQt5.QtWidgets import (QGraphicsItem, QGraphicsPathItem)
+from PySide.QtGui import (QGraphicsItem, QGraphicsPathItem)
 
 from qneport import QNEPort
 

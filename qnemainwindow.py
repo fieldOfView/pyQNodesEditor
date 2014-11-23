@@ -26,9 +26,9 @@
 #(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 #SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from PyQt5.QtCore import (Qt)
-from PyQt5.QtGui import (QPainter, QBrush, QPalette)
-from PyQt5.QtWidgets import (QApplication, QMainWindow, QAction, QWidget,
+from PySide.QtCore import (Qt)
+from PySide.QtGui import (QPainter, QBrush, QPalette)
+from PySide.QtGui import (QApplication, QMainWindow, QAction, QWidget,
     QGraphicsScene, QGraphicsView)
 
 from qnodeseditor import QNodesEditor
