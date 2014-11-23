@@ -25,8 +25,9 @@
 #SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-from PyQt5.QtCore import (Qt, QObject, QEvent, QSizeF, QRectF, QPointF)
-from PyQt5.QtWidgets import (QGraphicsView, QGraphicsItem, QGraphicsSceneMouseEvent)
+from PySide.QtCore import (Qt, QObject, QEvent, QSizeF, QRectF, QPointF)
+from PySide.QtGui import (QGraphicsView, QGraphicsItem, QGraphicsItem, 
+    QGraphicsSceneMouseEvent)
 
 from qneblock import QNEBlock
 from qneport import QNEPort
