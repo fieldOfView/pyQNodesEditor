@@ -27,7 +27,7 @@
 #SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from PySide.QtCore import (Qt)
-from PySide.QtGui import (QPainter, QBrush, QPalette)
+from PySide.QtGui import (QPainter, QBrush, QPalette, QTransform)
 from PySide.QtGui import (QApplication, QMainWindow, QAction, QWidget,
     QGraphicsScene, QGraphicsView)
 

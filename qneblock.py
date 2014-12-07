@@ -49,10 +49,11 @@ class QNEBlock(QGraphicsPathItem):
         selectedColor.setAlphaF(0.8)
         self.selectedBrush.setColor(selectedColor)
 
+        self.pen = QPen(QApplication.palette().text().color(), 1)
+
         path = QPainterPath()
         path.addRoundedRect(-50, -15, 100, 30, 5, 5);
         self.setPath(path)
-        self.setPen(QPen(Qt.black))
         self.setBrush(self.normalBrush)
         self.setFlag(QGraphicsItem.ItemIsMovable)
         self.setFlag(QGraphicsItem.ItemIsSelectable)
@@ -87,6 +88,7 @@ class QNEBlock(QGraphicsPathItem):
             painter.setBrush(self.selectedBrush)
         else:
             painter.setBrush(self.normalBrush)
+        painter.setPen(self.pen)
 
         painter.drawPath(self.path())
 
