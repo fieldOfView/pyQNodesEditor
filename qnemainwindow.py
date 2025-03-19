@@ -26,10 +26,10 @@
 #(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 #SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from PySide.QtCore import (Qt)
-from PySide.QtGui import (QPainter, QBrush, QPalette)
-from PySide.QtGui import (QApplication, QMainWindow, QAction, QWidget,
-    QGraphicsScene, QGraphicsView)
+from PySide6.QtCore import (Qt)
+from PySide6.QtGui import (QPainter, QBrush, QPalette)
+from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QGraphicsScene, QGraphicsView
+from PySide6.QtGui import QAction
 
 from qnodeseditor import QNodesEditor
 from qneblock import QNEBlock
@@ -64,12 +64,12 @@ class QNEMainWindow(QMainWindow):
         self.scene.addItem(block)
         block.addPort("test", 0, QNEPort.NamePort)
         block.addPort("TestBlock", 0, QNEPort.TypePort)
-        block.addInputPort("in1");
-        block.addInputPort("in2");
-        block.addInputPort("in3");
-        block.addOutputPort("out1");
-        block.addOutputPort("out2");
-        block.addOutputPort("out3");
+        block.addInputPort("in1")
+        block.addInputPort("in2")
+        block.addInputPort("in3")
+        block.addOutputPort("out1")
+        block.addOutputPort("out2")
+        block.addOutputPort("out3")
 
         block = block.clone()
         block.setPos(150,0)
@@ -98,5 +98,5 @@ if __name__ == '__main__':
     widget = QNEMainWindow(None)
     widget.show()
 
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
 
