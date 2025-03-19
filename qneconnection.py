@@ -25,9 +25,9 @@
 #SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-from PySide.QtCore import (Qt, QPointF)
-from PySide.QtGui import (QBrush, QPen, QPainterPath)
-from PySide.QtGui import (QGraphicsItem, QGraphicsPathItem)
+from PySide6.QtCore import (Qt, QPointF)
+from PySide6.QtGui import (QBrush, QPen, QPainterPath)
+from PySide6.QtWidgets import (QGraphicsItem, QGraphicsPathItem)
 
 class QNEConnection(QGraphicsPathItem):
     (Type) = (QGraphicsItem.UserType +2)

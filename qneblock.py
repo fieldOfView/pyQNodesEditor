@@ -25,10 +25,10 @@
 #SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-from PySide.QtCore import (Qt)
-from PySide.QtGui import (QBrush, QColor, QPainter, QPainterPath, QPen,
+from PySide6.QtCore import (Qt)
+from PySide6.QtGui import (QBrush, QColor, QPainter, QPainterPath, QPen,
     QFontMetrics)
-from PySide.QtGui import (QGraphicsItem, QGraphicsPathItem)
+from PySide6.QtWidgets import (QGraphicsItem, QGraphicsPathItem)
 
 from qneport import QNEPort
 
@@ -84,9 +84,10 @@ class QNEBlock(QGraphicsPathItem):
         port.setPortFlags(flags)
         port.setPtr(ptr)
 
-        fontmetrics = QFontMetrics(self.scene().font());
-        width = fontmetrics.width(name)
-        height = fontmetrics.height()
+        fontmetrics = QFontMetrics(self.scene().font())
+        size = fontmetrics.size(Qt.TextSingleLine, name)
+        width = size.width()
+        height = size.height()
         if width > self.width - self.horzMargin:
             self.width = width + self.horzMargin
         self.height += height
